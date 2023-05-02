@@ -2,7 +2,7 @@
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
-if [ "$branch" = "master" ] || [ "$branch" = "develop" ]; then
+if [ "$branch" = "main" ] || [ "$branch" = "develop" ]; then
   echo "You cannot commit directly to $branch branch! Please raise a PR instead."
   exit 1
 fi
