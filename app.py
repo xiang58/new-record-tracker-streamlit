@@ -1,3 +1,28 @@
+import sqlite3
 import streamlit as st
 
-st.title('Hello World')
+from datetime import date
+
+con = sqlite3.connect(
+    'C:\\Users\\xiang\\Desktop\\Programs\\Coding\\Database\\SQLite\\db\\new_record_tracker.db'
+)
+cur = con.cursor()
+result = list(cur.execute('''
+    SELECT * FROM "MyDate"
+    ORDER BY "id" DESC
+    LIMIT 1
+'''))
+
+last_date = result[0][1]
+type = result[0][2]
+last_date_n_type = 'Last date: {}; Type: {}'.format(last_date, type)
+st.text(last_date_n_type)
+
+new_date = st.date_input('Pick a date:', date.today())
+date_type = st.selectbox('Pick a type:', ('-1', '0', '1', '2'))
+if st.button('Add Date'):
+    cur.execute('''
+        INSERT INTO "MyDate" (my_date, date_type)
+        VALUES (?, ?)
+    ''', (new_date, date_type))
+    con.commit()
