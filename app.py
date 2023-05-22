@@ -1,6 +1,6 @@
 import sqlite3
 import streamlit as st
-from datetime import date
+from datetime import date, datetime
 
 con = sqlite3.connect(
     'C:\\Users\\xiang\\Desktop\\Programs\\Coding\\Database\\SQLite\\db\\new_record_tracker.db'
@@ -24,6 +24,11 @@ current_score = 0
 for item in date_types:
     current_score += item[0]
 st.text('Current score: ' + str(current_score))
+
+today = datetime.today()
+last_date = datetime.strptime(last_date, '%Y-%m-%d')
+date_diff = (today - last_date).days
+st.text(date_diff)
 
 new_date = st.date_input('Pick a date:', date.today())
 date_type = st.selectbox('Pick a type:', ('1', '0', '-1', '2'))
