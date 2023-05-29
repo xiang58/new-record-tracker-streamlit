@@ -1,6 +1,10 @@
 import sqlite3
 import streamlit as st
+from constants import COLORS
 from datetime import date, datetime
+
+if 'current_date' not in st.session_state:
+    st.session_state['current_date'] = date.today()
 
 con = sqlite3.connect(
     'C:\\Users\\xiang\\Desktop\\Programs\\Coding\\Database\\SQLite\\db\\new_record_tracker.db'
@@ -25,11 +29,10 @@ for item in date_types:
     current_score += item[0]
 st.text('Current score: ' + str(current_score))
 
-today = datetime.today()
-last_date = datetime.strptime(last_date, '%Y-%m-%d')
-date_diff = (today - last_date).days
+last_date = datetime.strptime(last_date, '%Y-%m-%d').date()
+date_diff = (st.session_state['current_date'] - last_date).days
 circle = '<div class="circle"><b>{}</b></div>'.format(date_diff)
-style = """
+style = '''
 <style>
     .circle {
         width: 50px;
@@ -44,11 +47,11 @@ style = """
         margin: 25px 0 0px 50px;
     }
 </style>
-"""
+'''
 st.markdown(circle, unsafe_allow_html=True)
 st.markdown(style, unsafe_allow_html=True)
 
-new_date = st.date_input('Pick a date:', date.today())
+new_date = st.date_input('Pick a date:', key='current_date', max_value=date.today())
 date_type = st.selectbox('Pick a type:', ('1', '0', '-1', '2'))
 if st.button('Add Date'):
     cur.execute('''
