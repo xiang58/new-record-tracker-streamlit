@@ -31,27 +31,33 @@ st.text('Current score: ' + str(current_score))
 
 last_date = datetime.strptime(last_date, '%Y-%m-%d').date()
 date_diff = (st.session_state['current_date'] - last_date).days
+background_index = date_diff
+if date_diff < 0:
+    background_index = 0
+if date_diff > 7:
+    background_index = 7
+
 circle = '<div class="circle"><b>{}</b></div>'.format(date_diff)
-style = '''
+style = f'''
 <style>
-    .circle {
+    .circle {{
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: #d3e607;
+        background: {COLORS[background_index]};
         text-align: center;
         font-size: larger;
         line-height: 50px;
         color: rgb(0, 0, 0);
         float: left;
         margin: 25px 0 0px 50px;
-    }
+    }}
 </style>
 '''
 st.markdown(circle, unsafe_allow_html=True)
 st.markdown(style, unsafe_allow_html=True)
 
-new_date = st.date_input('Pick a date:', key='current_date', max_value=date.today())
+new_date = st.date_input('Pick a date:', key='current_date', min_value=last_date, max_value=date.today())
 date_type = st.selectbox('Pick a type:', ('1', '0', '-1', '2'))
 if st.button('Add Date'):
     cur.execute('''
