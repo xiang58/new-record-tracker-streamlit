@@ -51,3 +51,32 @@ def show_insert_new_rec(conn):
     date_type = st.selectbox('Pick a type:', ('1', '0', '-1', '2'))
     if st.button('Add Date'):
         cur.execute(sql.ADD_DATE, (new_date, date_type))
+
+def get_chart_54456624():
+    import plotly.graph_objects as go
+    import datetime
+    import numpy as np
+    np.random.seed(1)
+
+    programmers = ['Alex','Nicole','Sara','Etienne','Chelsea','Jody','Marianne']
+
+    base = datetime.datetime.today()
+    dates = base - np.arange(180) * datetime.timedelta(days=1)
+    z = np.random.poisson(size=(len(programmers), len(dates)))
+
+    fig = go.Figure(data=go.Heatmap(
+            z=z,
+            x=dates,
+            y=programmers,
+            colorscale='Viridis'))
+
+    fig.update_layout(
+        title='GitHub commits per day',
+        xaxis_nticks=36)
+
+
+    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
+    with tab1:
+        st.plotly_chart(fig, theme="streamlit")
+    with tab2:
+        st.plotly_chart(fig, theme=None)
