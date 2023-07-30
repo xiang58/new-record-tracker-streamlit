@@ -12,3 +12,5 @@ ADD_DATE = '''
     INSERT INTO "MyDate" (my_date, date_type)
     VALUES (?, ?)
 '''
+
+GET_ALL_RECS = 'SELECT * FROM "MyDate"'

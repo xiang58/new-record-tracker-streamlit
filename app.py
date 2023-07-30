@@ -11,6 +11,7 @@ def main():
     wd.show_score()
     wd.show_circle(st.session_state['current_date'])
     wd.show_insert_new_rec()
+    wd.show_date_heatmap()
 
 if __name__ == '__main__':
     main()
