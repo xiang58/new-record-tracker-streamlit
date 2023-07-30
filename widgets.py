@@ -1,8 +1,10 @@
+import plotly.graph_objects as go
 import streamlit as st
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from constants import html, misc, sql
 from db_connector import db_connector
+from helper import transform_recs
 
 @db_connector
 def get_last_record(conn):
@@ -52,31 +54,30 @@ def show_insert_new_rec(conn):
     if st.button('Add Date'):
         cur.execute(sql.ADD_DATE, (new_date, date_type))
 
-def get_chart_54456624():
-    import plotly.graph_objects as go
-    import datetime
-    import numpy as np
-    np.random.seed(1)
+@db_connector
+def get_all_recs(conn):
+    cur = conn.cursor()
+    result = list(cur.execute(sql.GET_ALL_RECS))
+    return result
 
-    programmers = ['Alex','Nicole','Sara','Etienne','Chelsea','Jody','Marianne']
+def show_date_heatmap():
+    all_recs = get_all_recs()
+    first_day = datetime.strptime(all_recs[0][1], '%Y-%m-%d').date()
+    today = datetime.today().date()
+    num_days = (today - first_day).days + 1
 
-    base = datetime.datetime.today()
-    dates = base - np.arange(180) * datetime.timedelta(days=1)
-    z = np.random.poisson(size=(len(programmers), len(dates)))
+    dates = [(today - timedelta(days=x)).strftime('%Y-%m-%d') for x in range(num_days, -1, -1)]
+    z = transform_recs(all_recs, dates)
+    colorscale = [
+        [0, 'rgb(255, 255, 255)'], 
+        [1/15, 'rgb(193, 247, 195)'], [2/15, 'rgb(137, 224, 140)'], [3/15, 'rgb(90, 199, 93)'], [4/15, 'rgb(46, 171, 50)'], [5/15, 'rgb(15, 145, 19)'],
+        [6/15, 'rgb(252, 231, 154)'], [7/15, 'rgb(235, 206, 103)'], [8/15, 'rgb(222, 187, 64)'], [9/15, 'rgb(207, 168, 31)'], [10/15, 'rgb(189, 147, 2)'],
+        [11/15, 'rgb(252, 189, 189)'], [12/15, 'rgb(237, 138, 138)'], [13/15, 'rgb(222, 89, 89)'], [14/15, 'rgb(209, 42, 42)'], [1, 'rgb(176, 0, 0)'],
+    ]
 
-    fig = go.Figure(data=go.Heatmap(
-            z=z,
-            x=dates,
-            y=programmers,
-            colorscale='Viridis'))
+    fig = go.Figure(data=go.Heatmap(x=dates, y=[''], z=z, zmin=0, zmax=15, colorscale=colorscale))
 
-    fig.update_layout(
-        title='GitHub commits per day',
-        xaxis_nticks=36)
+    fig.update_layout(title='Sample')
 
-
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-    with tab1:
-        st.plotly_chart(fig, theme="streamlit")
-    with tab2:
-        st.plotly_chart(fig, theme=None)
+    st.plotly_chart(fig, theme="streamlit")
+    
