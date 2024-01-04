@@ -1,4 +1,6 @@
 @echo OFF
 cd ..
-pipenv install
-pipenv run streamlit run app.py
+if not exist ".venv" (
+    py -m venv .venv && py -m pip install -r requirements.txt
+)
+.venv\Scripts\activate && streamlit run app.py
