@@ -8,7 +8,6 @@ def main():
         st.session_state['current_date'] = date.today()
 
     wd.show_last_date()
-    wd.show_score()
     wd.show_circle(st.session_state['current_date'])
     wd.show_insert_new_rec()
     wd.show_date_heatmap()

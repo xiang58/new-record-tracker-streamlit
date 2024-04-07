@@ -3,4 +3,4 @@ cd ..
 if not exist ".venv" (
     py -m venv .venv && py -m pip install -r requirements.txt
 )
-.venv\Scripts\activate && streamlit run app.py
+.venv\Scripts\activate && streamlit run src\app.py
