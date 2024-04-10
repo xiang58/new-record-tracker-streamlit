@@ -1,5 +1,3 @@
-from math import ceil
-
 def transform_recs(all_recs, dates):
     d = {date: [] for date in dates}
 
@@ -8,7 +6,6 @@ def transform_recs(all_recs, dates):
         if date in d:
             d[date].append(rec[2])
 
-    print(d)
     return [[compute_score(d[date]) for date in dates]]
 
 def compute_score(recs):
