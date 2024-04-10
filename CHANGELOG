@@ -1,4 +1,7 @@
 💡 - new feature &emsp;&emsp; 🔄 - modification &emsp;&emsp; 🐞 - bug fix
 ___
-### 📌 v0.1.1
+### 📌 v0.1.2
+* 💡 [**MRT-1**](https://daniel-hengyu-xiang.atlassian.net/browse/MRT-1) - Deploy to cloud
+___
+### v0.1.1
 * 🔄 [**RT-1**](https://daniel-hengyu-xiang.atlassian.net/browse/RT-1) - Redeploy the app
