@@ -4,10 +4,13 @@ ___
 - 🔄 [**MRT-3**](https://daniel-hengyu-xiang.atlassian.net/browse/MRT-3) - June misc 1
     - Change DB connection path
     - Disable auto opening browser
+    - Use different DB for different env
+    - Change color scale
     
 ___
 ### 📌 v0.1.2
 - 💡 [**MRT-1**](https://daniel-hengyu-xiang.atlassian.net/browse/MRT-1) - Deploy to cloud
+
 ___
 ### v0.1.1
 - 🔄 [**RT-1**](https://daniel-hengyu-xiang.atlassian.net/browse/RT-1) - Redeploy the app
