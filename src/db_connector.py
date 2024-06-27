@@ -1,8 +1,6 @@
 import os
 import sqlite3
 
-from constants import sql
-
 def db_connector(f):
 
     env = os.getenv('STREAMLIT_ENV', 'dev')

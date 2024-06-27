@@ -1,10 +1,12 @@
 import plotly.graph_objects as go
 import streamlit as st
+import time
 from datetime import date, datetime, timedelta
 
 from constants import html, misc, sql
 from db_connector import db_connector
 from helper import transform_recs
+
 
 @db_connector
 def get_last_record(conn):
@@ -18,6 +20,7 @@ def show_last_date():
     type = last_rec[0][2]
     last_date_n_type = 'Last date: {}; Type: {}'.format(last_date, type)
     st.text(last_date_n_type)
+
 
 def show_circle(current_date):
     last_rec = get_last_record()
@@ -35,21 +38,27 @@ def show_circle(current_date):
     st.markdown(circle, unsafe_allow_html=True)
     st.markdown(style, unsafe_allow_html=True)
 
-@db_connector
-def show_insert_new_rec(conn):
-    cur = conn.cursor()
+
+def show_insert_new_rec():
     last_rec = get_last_record()
     last_date = datetime.strptime(last_rec[0][1], '%Y-%m-%d').date()
     new_date = st.date_input('Pick a date:', key='current_date', min_value=last_date, max_value=date.today())
     date_type = st.selectbox('Pick a type:', ('1', '0', '-1'))
-    if st.button('Add Date'):
-        cur.execute(sql.ADD_DATE, (new_date, date_type))
+    st.button('Add Date', on_click=add_date, args=(new_date, date_type))
+        
+
+@db_connector
+def add_date(conn, new_date, date_type):
+    cur = conn.cursor()
+    cur.execute(sql.ADD_DATE, (new_date, date_type))
+
 
 @db_connector
 def get_all_recs(conn):
     cur = conn.cursor()
     result = list(cur.execute(sql.GET_ALL_RECS))
     return result
+
 
 def show_date_heatmap():
     all_recs = get_all_recs()
