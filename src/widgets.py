@@ -39,10 +39,10 @@ def show_circle(current_date):
     st.markdown(style, unsafe_allow_html=True)
 
 
-def show_insert_new_rec():
+def show_insert_new_rec(current_date):
     last_rec = get_last_record()
     last_date = datetime.strptime(last_rec[0][1], '%Y-%m-%d').date()
-    new_date = st.date_input('Pick a date:', key='current_date', min_value=last_date, max_value=date.today())
+    new_date = st.date_input('Pick a date:', key='current_date', value=current_date, min_value=last_date, max_value=date.today())
     date_type = st.selectbox('Pick a type:', ('1', '0', '-1'))
     st.button('Add Date', on_click=add_date, args=(new_date, date_type))
         
