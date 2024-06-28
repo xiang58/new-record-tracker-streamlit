@@ -1,6 +1,5 @@
 import plotly.graph_objects as go
 import streamlit as st
-import time
 from datetime import date, datetime, timedelta
 
 from constants import html, misc, sql
