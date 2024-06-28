@@ -6,6 +6,7 @@ ___
     - Disable auto opening browser
     - Use different DB for different env
     - Change color scale
+    - Fix date update issue
     
 ___
 ### 📌 v0.1.2
