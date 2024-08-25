@@ -10,7 +10,11 @@ from helper import transform_recs
 
 def get_all_recs():
     # Initialize DynamoDB resource
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    dynamodb = boto3.resource(
+        'dynamodb', region_name='us-east-1', 
+        aws_access_key_id=st.secrets["aws_access_key_id"],
+        aws_secret_access_key=st.secrets["aws_secret_access_key"]
+    )
 
     # Specify the table
     table = dynamodb.Table('new_record_tracker')
