@@ -1,42 +1,10 @@
 from datetime import date, datetime, timedelta
 
-import boto3
 import plotly.graph_objects as go
 import streamlit as st
 
 from constants import html, misc
-from helper import transform_recs
-
-
-def get_all_recs():
-    # Initialize DynamoDB resource
-    dynamodb = boto3.resource(
-        'dynamodb', region_name='us-east-1', 
-        aws_access_key_id=st.secrets["aws_access_key_id"],
-        aws_secret_access_key=st.secrets["aws_secret_access_key"]
-    )
-
-    # Specify the table
-    table = dynamodb.Table('new_record_tracker')
-
-    # Query the table
-    response = table.scan()
-
-    # Get the items from the response
-    items = response['Items']
-
-    # Transform to correct format
-    all_recs = [
-        [
-            int(item['date_id']), item['date_val'], int(item['date_type'])
-        ] 
-        for item in items
-    ]
-
-    # Sort all_recs based on ID
-    all_recs.sort(key=lambda x: x[0])
-
-    return all_recs
+from helper import get_dynamodb_table, transform_recs
 
 
 def show_last_date(all_recs):
@@ -80,8 +48,7 @@ def add_date(all_recs, new_date, date_type):
         'date_type': date_type
     }
 
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-    table = dynamodb.Table('new_record_tracker')
+    table = get_dynamodb_table()
     response = table.put_item(Item=item)
 
     if response['ResponseMetadata']['HTTPStatusCode'] == 200:
