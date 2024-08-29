@@ -1,4 +1,6 @@
 __pycache__
-.vscode/
 .git
+.streamlit
 .venv
+.vscode/
+data.json
